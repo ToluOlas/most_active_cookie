@@ -12,7 +12,7 @@ A command-line tool that finds the most active cookie(s) from an activity log fi
 
 ## Built With
 
-- Python 3.9+ (standard library only: `csv`, `argparse`, `datetime`, `collections`)
+- Python 3.9+ (standard library only: `csv`, `argparse`, `datetime`, `collections`, `logging`)
 - [pytest](https://pytest.org) for testing
 
 ## Getting Started
