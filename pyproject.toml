@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=67"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coding-task-quantcast"
+version = "1.0.0"
+description = "CLI tool that finds the most active cookie from an activity log file on a given day."
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+most-active-cookie = "main:main"
+
+[tool.setuptools]
+py-modules = ["main"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
