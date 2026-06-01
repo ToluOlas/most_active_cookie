@@ -126,6 +126,15 @@ def test_missing_timestamp_column_skipped(caplog):
     assert result == ["xyz"]
     assert "skipping invalid row" in caplog.text.lower()
 
+def test_missing_cookie_column_skipped(caplog):
+    rows = [
+        {"timestamp": "2018-12-09T09:00:00+00:00"},
+        {"cookie": "xyz", "timestamp": "2018-12-09T10:00:00+00:00"},
+    ]
+    result = find_most_active_cookies(rows, date(2018, 12, 9))
+    assert result == ["xyz"]
+    assert "skipping invalid row" in caplog.text.lower()
+
 def test_all_rows_invalid_returns_empty(capsys):
     rows = [
         {"cookie": "abc", "timestamp": "bad"},

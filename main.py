@@ -57,12 +57,13 @@ def find_most_active_cookies(rows: list[dict[str, str]], target_date: date) -> l
         try:
             utc_datetime = datetime.fromisoformat(row["timestamp"]).astimezone(timezone.utc)
             row_date = utc_datetime.date()
+            cookie = row["cookie"]
         except (ValueError, KeyError):
             logger.warning(f"Skipping invalid row {index}: {row}")
             continue
 
         if row_date == target_date:
-            counts[row["cookie"]] += 1
+            counts[cookie] += 1
 
     if not counts:
         return []
