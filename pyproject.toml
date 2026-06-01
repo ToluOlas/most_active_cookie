@@ -3,7 +3,7 @@ requires = ["setuptools>=67"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "coding-task-quantcast"
+name = "most_active_cookie"
 version = "1.0.0"
 description = "CLI tool that finds the most active cookie from an activity log file on a given day."
 requires-python = ">=3.9"

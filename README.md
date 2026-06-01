@@ -34,6 +34,17 @@ git clone https://github.com/ToluOlas/most_active_cookie.git
 cd most_active_cookie
 ```
 
+### Install as a command (optional)
+
+Installing the project provides a `most-active-cookie` command. I recommended a virtual environment.
+
+```sh
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # macOS / Linux
+pip install .
+```
+
 ## Usage
 
 ### Main Program (`main.py`)
@@ -60,6 +71,16 @@ Output:
 ```
 AtY0laUfhglK3lC7
 ```
+
+### Installed Command (`most-active-cookie`)
+
+If you installed the project ([Install as a command](#install-as-a-command-optional)), run it directly:
+
+```sh
+most-active-cookie -f cookie_log.csv -d 2018-12-09
+```
+
+This is the same as the `python main.py` command above.
 
 ### Tests (`test_main.py`)
 
