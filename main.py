@@ -1,3 +1,5 @@
+"""Command-line tool to find the most active cookie(s) in a log file for a given UTC date."""
+
 from datetime import datetime, timezone, date
 from collections import Counter
 import csv
@@ -8,6 +10,8 @@ import sys
 logger = logging.getLogger("most_active_cookie")
 
 def parse_date(date_str: str) -> date:
+    """Parse a YYYY-MM-DD string into a date.
+    """
     try:
         return date.fromisoformat(date_str)
     except ValueError:
@@ -15,6 +19,11 @@ def parse_date(date_str: str) -> date:
         sys.exit(1)
 
 def load_rows(file_name: str) -> list[dict[str, str]]:
+    """CSV file to dict conversion.
+
+    Primarily for catching potential errors related to finding and
+    accessing the log file.
+    """
     try:
         with open(file_name, newline="", encoding="utf-8-sig") as file:
             return list(csv.DictReader(file))
@@ -35,13 +44,18 @@ def load_rows(file_name: str) -> list[dict[str, str]]:
         sys.exit(1)
 
 def find_most_active_cookies(rows: list[dict[str, str]], target_date: date) -> list[str]:
+    """Find the most active cookie(s) on a given UTC date.
+
+    Timezone differences are normalised before dates are compared.
+    Rows with a missing or invalid timestamp are skipped with a warning.
+    Every cookie tied for the highest count is returned, or an empty list
+    if no rows match the target date.
+    """
     counts: Counter[str] = Counter()
 
     for index, row in enumerate(rows, start=1):
         try:
-            #raw string to UTC, with timezone awareness
             utc_datetime = datetime.fromisoformat(row["timestamp"]).astimezone(timezone.utc)
-            #extract calendar date
             row_date = utc_datetime.date()
         except (ValueError, KeyError):
             logger.warning(f"Skipping invalid row {index}: {row}")
@@ -57,6 +71,7 @@ def find_most_active_cookies(rows: list[dict[str, str]], target_date: date) -> l
     return [cookie for cookie, count in counts.items() if count == max_count]
 
 def main() -> None:
+    """Parse CLI arguments and run the entire workflow."""
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s", stream=sys.stderr)
 
     parser = argparse.ArgumentParser(description="Find the most active cookie for a specific date.")
