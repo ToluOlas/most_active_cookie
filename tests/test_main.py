@@ -78,10 +78,11 @@ def test_invalid_date_format(caplog):
 
     assert "2018/12/09" in caplog.text
 
-def test_invalid_date_nonsense_exits(capsys):
+def test_invalid_date_nonsense_exits(caplog):
     with pytest.raises(SystemExit) as exc_info:
         parse_date("not-a-date")
     assert exc_info.value.code == 1
+    assert "not a valid date" in caplog.text
 
 #load_rows
 
@@ -135,7 +136,7 @@ def test_missing_cookie_column_skipped(caplog):
     assert result == ["xyz"]
     assert "skipping invalid row" in caplog.text.lower()
 
-def test_all_rows_invalid_returns_empty(capsys):
+def test_all_rows_invalid_returns_empty(caplog):
     rows = [
         {"cookie": "abc", "timestamp": "bad"},
         {"cookie": "xyz", "timestamp": "bad-but-again"},
@@ -143,3 +144,4 @@ def test_all_rows_invalid_returns_empty(capsys):
     ]
     result = find_most_active_cookies(rows, date(2018, 12, 9))
     assert result == []
+    assert caplog.text.lower().count("skipping invalid row") == 3
